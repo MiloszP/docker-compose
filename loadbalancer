@@ -1,0 +1,14 @@
+events { worker_connections 1024;}
+
+http {
+    upstream app {
+        server docker-compose_web_app_2_1:80;
+        server docker-compose_web_app_1_1:80;
+    }
+    server {
+        listen 80;
+        location / {
+            proxy_pass http://app;
+        }
+    }
+}

@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  db:
+    image: percona:8
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+  ngnix-server:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - './loadbalancer:/etc/nginx/nginx.conf'
+    depends_on:
+      - web_app_1
+      - web_app_2
+  web_app_1:
+    build:
+      context : ./web-app/
+      dockerfile: webapp.Dockerfile
+  web_app_2:
+    build:
+      context : ./web-app-2/
+      dockerfile: webapp.Dockerfile
